@@ -44,7 +44,8 @@ add_action('plugins_loaded', function () {
     load_plugin_textdomain(
         'hellaz-website-analyzer',
         false,
-        dirname(HELLAZ_PLUGIN_BASENAME) . '/languages/'
+        dirname(plugin_basename(__FILE__)) . '/languages/'
+
     );
 
     // Initialize core components
