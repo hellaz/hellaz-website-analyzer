@@ -32,15 +32,27 @@ class Installer {
     }
 
     private static function set_default_options() {
+        // Set async salt if not exists (hidden from autoload)
         if (!get_option('hellaz_async_salt')) {
-        update_option('hellaz_async_salt', wp_generate_password(64, true, true), false);
+            update_option(
+                'hellaz_async_salt', 
+                wp_generate_password(64, true, true), 
+                false // Don't autoload sensitive data
+            );
         }
+    
+        // Initialize salt rotation tracking (autoload OK)
+        add_option('hellaz_salt_rotation', time(), '', 'no');
+    
+        // Set default settings with safe values
         add_option('hellaz_settings', [
             'cache_ttl' => 6,
             'enable_ssl_check' => true,
             'default_open_links' => '_blank',
-            'active_modules' => ['metadata', 'social', 'security']
-        ]);
+            'active_modules' => ['metadata', 'social', 'security'],
+            'async_enabled' => true,
+            'max_redirects' => 3
+        ], '', 'yes');
     }
 
     public static function deactivate() {
