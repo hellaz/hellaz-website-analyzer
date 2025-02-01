@@ -77,7 +77,13 @@ class External_Services {
     private static function cache_result($url, $category, $data) {
         $cache = new Cache();
         $existing = $cache->get($url) ?: [];
-        $existing[$category] = $data;
+        
+        // Merge new data while preserving existing cache
+        $existing[$category] = array_merge(
+            $existing[$category] ?? [],
+            $data
+        );
+        
         $cache->set($url, $existing);
     }
 }
