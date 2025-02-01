@@ -32,6 +32,9 @@ class Installer {
     }
 
     private static function set_default_options() {
+        if (!get_option('hellaz_async_salt')) {
+        update_option('hellaz_async_salt', wp_generate_password(64, true, true), false);
+        }
         add_option('hellaz_settings', [
             'cache_ttl' => 6,
             'enable_ssl_check' => true,
