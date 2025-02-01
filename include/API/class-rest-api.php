@@ -10,10 +10,10 @@ class Rest_API {
     }
 
     public static function register_routes() {
+        // Existing analyze endpoint
         register_rest_route('hellaz/v1', '/analyze', [
             'methods' => 'GET',
             'callback' => [self::class, 'handle_analysis_request'],
-            'permission_callback' => '__return_true',
             'args' => [
                 'url' => [
                     'required' => true,
@@ -23,18 +23,30 @@ class Rest_API {
                 ]
             ]
         ]);
+    
+        // New batch analysis endpoint
+        register_rest_route('hellaz/v1', '/batch-analyze', [
+            'methods' => 'POST',
+            'callback' => [self::class, 'handle_batch_analysis'],
+            'permission_callback' => function() {
+                return current_user_can('manage_options');
+            }
+        ]);
     }
-
-    public static function handle_analysis_request(\WP_REST_Request $request) {
-        try {
-            $url = esc_url_raw($request->get_param('url'));
-            $engine = new Engine();
-            $data = $engine->analyze($url);
-            
-            return rest_ensure_response($data);
-            
-        } catch (AnalysisException $e) {
-            return new \WP_Error('analysis_failed', $e->getMessage(), ['status' => 400]);
+    
+    public static function handle_batch_analysis(\WP_REST_Request $request) {
+        $urls = $request->get_param('urls');
+        $results = [];
+        
+        foreach ($urls as $url) {
+            if (Formatter::validate_url($url)) {
+                $results[] = [
+                    'url' => $url,
+                    'data' => (new Engine())->analyze($url)
+                ];
+            }
         }
+        
+        return rest_ensure_response($results);
     }
 }
