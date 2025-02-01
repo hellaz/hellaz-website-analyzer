@@ -22,6 +22,7 @@ define('HELLAZ_PLUGIN_URL', plugin_dir_url(__FILE__));
 define('HELLAZ_PLUGIN_BASENAME', plugin_basename(__FILE__));
 define('HELLAZ_CACHE_TTL', 6 * HOUR_IN_SECONDS); // 6 hours cache
 
+
 // Autoload classes
 spl_autoload_register(function ($class_name) {
     if (strpos($class_name, 'Hellaz\\') === 0) {
