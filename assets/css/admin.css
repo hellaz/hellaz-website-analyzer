@@ -1,1 +1,66 @@
-# Admin styles
+// Admin styles
+/* Main Settings Container */
+.hellaz-settings {
+    max-width: 1000px;
+    margin: 20px auto;
+    padding: 20px;
+    background: #fff;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+/* Form Elements */
+.hellaz-settings input[type="url"],
+.hellaz-settings input[type="number"] {
+    width: 100%;
+    max-width: 400px;
+}
+
+.hellaz-settings .form-table th {
+    width: 250px;
+}
+
+/* Module Grid */
+.hellaz-modules-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 15px;
+    margin: 20px 0;
+}
+
+.hellaz-module-card {
+    padding: 15px;
+    border: 1px solid #ccd0d4;
+    background: #f6f7f7;
+}
+
+/* Validation Messages */
+.valid { color: #46b450; }
+.invalid { color: #dc3232; }
+
+/* Test URL Section */
+#hellaz_test_results {
+    margin: 20px 0;
+    padding: 15px;
+    background: #f6f7f7;
+    border: 1px solid #ccd0d4;
+}
+
+#hellaz_test_results pre {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+/* Advanced Settings */
+.hellaz-advanced-toggle {
+    cursor: pointer;
+    color: #2271b1;
+    margin: 15px 0;
+    display: inline-block;
+}
+
+.hellaz-advanced-settings {
+    display: none;
+    padding: 15px;
+    background: #f8f9fa;
+    border: 1px solid #ddd;
+}
