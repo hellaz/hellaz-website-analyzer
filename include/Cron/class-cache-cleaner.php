@@ -12,16 +12,21 @@ class Cache_Cleaner {
 
     public static function clean_cache() {
         global $wpdb;
-        // Add salt rotation every 30 days
-        if (rand(1, 30) === 1) { // Random chance to rotate
+    
+        // Salt rotation with 30-day interval
+        $last_rotation = get_option('hellaz_salt_rotation', 0);
+        if (time() - $last_rotation > 30 * DAY_IN_SECONDS) {
             update_option('hellaz_async_salt', wp_generate_password(64, true, true));
+            update_option('hellaz_salt_rotation', time());
         }
+    
+        // Clean expired transients
         $transient_prefix = '_transient_hellaz_analysis_%';
         $wpdb->query(
             $wpdb->prepare("
                 DELETE FROM {$wpdb->options}
                 WHERE option_name LIKE %s
-                AND option_value < %s
+                AND option_value < %d
             ", $transient_prefix, time())
         );
     }
