@@ -12,7 +12,10 @@ class Cache_Cleaner {
 
     public static function clean_cache() {
         global $wpdb;
-        
+        // Add salt rotation every 30 days
+        if (rand(1, 30) === 1) { // Random chance to rotate
+            update_option('hellaz_async_salt', wp_generate_password(64, true, true));
+        }
         $transient_prefix = '_transient_hellaz_analysis_%';
         $wpdb->query(
             $wpdb->prepare("
