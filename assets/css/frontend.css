@@ -1,1 +1,40 @@
-# Frontend styles
+// Frontend styles
+.hellaz-analysis-block {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 1.5rem;
+    margin: 1rem 0;
+}
+
+.hellaz-analysis-grid {
+    display: grid;
+    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
+.hellaz-analysis-section {
+    background: #f8f9fa;
+    padding: 1rem;
+    border-radius: 4px;
+}
+
+.hellaz-favicon {
+    max-width: 32px;
+    height: auto;
+    margin-right: 1rem;
+}
+
+.hellaz-disclaimer {
+    font-size: 0.8em;
+    color: #666;
+    margin-top: 1.5rem;
+    border-top: 1px solid #eee;
+    padding-top: 1rem;
+}
+
+@media (max-width: 600px) {
+    .hellaz-analysis-grid {
+        grid-template-columns: 1fr;
+    }
+}
