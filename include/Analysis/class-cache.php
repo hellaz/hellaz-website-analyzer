@@ -14,10 +14,14 @@ class Cache {
 
     public function set($url, $data) {
         $key = $this->get_cache_key($url);
-        $cache_data = [
-            'results' => $data,
-            'cached_at' => current_time('timestamp')
-        ];
+        $existing = $this->get($url) ?: [];
+    
+    // Merge new data with existing cache
+    $cache_data = [
+        'results' => array_merge($existing, $data),
+        'cached_at' => time()
+    ];
+    
         set_transient($key, $cache_data, $this->get_ttl());
     }
 
