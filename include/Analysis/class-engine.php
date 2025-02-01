@@ -21,35 +21,41 @@ class Engine {
         $this->parser = new Parser();
     }
 
-    public function analyze($url) {
-        try {
-            if (!Formatter::validate_url($url)) {
-                throw new AnalysisException(__('Invalid URL format', 'hellaz-website-analyzer'));
-            }
-
-            $cached = $this->cache->get($url);
-            do_action('hellaz_async_api_call', [
-                'type' => 'technology',
-                'url' => $url
-            ]);
-
-            do_action('hellaz_async_api_call', [
-                'type' => 'ssl',
-                'url' => $url
-            ]);
-            if ($cached) return $cached;
-
-            $response = $this->fetch_url($url);
-            $data = $this->parser->parse($response['body'], $url);
-            
-            $this->cache->set($url, $data);
-            return $data;
-
-        } catch (AnalysisException $e) {
-            error_log($e->getMessage());
-            return ['error' => $e->getMessage()];
+public function analyze($url) {
+    try {
+        if (!Formatter::validate_url($url)) {
+            throw new AnalysisException(__('Invalid URL format', 'hellaz-website-analyzer'));
         }
+
+        // First check cache
+        $cached = $this->cache->get($url);
+        
+        // Always trigger async updates regardless of cache status
+        do_action('hellaz_async_api_call', [
+            'type' => 'technology',
+            'url' => $url
+        ]);
+
+        do_action('hellaz_async_api_call', [
+            'type' => 'ssl',
+            'url' => $url
+        ]);
+
+        // Return cached data immediately if available
+        if ($cached) return $cached;
+
+        // Proceed with fresh analysis
+        $response = $this->fetch_url($url);
+        $data = $this->parser->parse($response['body'], $url);
+        
+        $this->cache->set($url, $data);
+        return $data;
+
+    } catch (AnalysisException $e) {
+        hellaz_log($e->getMessage());
+        return ['error' => $e->getMessage()];
     }
+}
 
     private function fetch_url($url) {
         $response = wp_safe_remote_get($url, [
