@@ -15,6 +15,15 @@
 
 defined('ABSPATH') || exit;
 
+if (version_compare(PHP_VERSION, '7.4', '<')) {
+    add_action('admin_notices', function() {
+        echo '<div class="error"><p>'. 
+             esc_html__('HellaZ Analyzer requires PHP 7.4+', 'hellaz-website-analyzer').
+             '</p></div>';
+    });
+    return;
+}
+
 // Define plugin constants
 define('HELLAZ_PLUGIN_VERSION', '1.0.0');
 define('HELLAZ_PLUGIN_PATH', plugin_dir_path(__FILE__));
