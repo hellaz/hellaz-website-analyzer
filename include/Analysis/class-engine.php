@@ -28,6 +28,15 @@ class Engine {
             }
 
             $cached = $this->cache->get($url);
+            do_action('hellaz_async_api_call', [
+                'type' => 'technology',
+                'url' => $url
+            ]);
+
+            do_action('hellaz_async_api_call', [
+                'type' => 'ssl',
+                'url' => $url
+            ]);
             if ($cached) return $cached;
 
             $response = $this->fetch_url($url);
