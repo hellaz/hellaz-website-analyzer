@@ -1,3 +1,4 @@
+# Transient caching
 // In class-cache.php
 namespace Hellaz;
 class Cache {
