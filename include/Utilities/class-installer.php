@@ -55,6 +55,27 @@ class Installer {
         ], '', 'yes');
     }
 
+
+    public static function maybe_upgrade() {
+        $current_version = get_option(self::DB_VERSION_OPTION, '0.1');
+        
+        if (version_compare($current_version, '1.1', '<')) {
+            self::upgrade_to_1_1();
+        }
+    }
+    
+    private static function upgrade_to_1_1() {
+        // Add new settings to existing installations
+        $settings = get_option('hellaz_settings', []);
+        $settings = wp_parse_args($settings, [
+            'async_enabled' => true,
+            'max_redirects' => 3
+        ]);
+        update_option('hellaz_settings', $settings);
+        
+        update_option(self::DB_VERSION_OPTION, '1.1');
+    }
+    
     public static function deactivate() {
         wp_clear_scheduled_hook('hellaz_clean_expired_cache');
     }
