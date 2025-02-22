@@ -16,11 +16,11 @@ class Cache {
         $key = $this->get_cache_key($url);
         $existing = $this->get($url) ?: [];
     
-    // Merge new data with existing cache
-    $cache_data = [
-        'results' => array_merge($existing, $data),
-        'cached_at' => time()
-    ];
+        // Merge new data with existing cache
+        $cache_data = [
+            'results' => array_merge($existing, $data),
+            'cached_at' => time()
+        ];
     
         set_transient($key, $cache_data, $this->get_ttl());
     }
