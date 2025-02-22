@@ -1,11 +1,11 @@
 <?php
 /**
- * Plugin Name: HellaZ Website Analyzer
+ * Plugin Name: Hellaz Website Analyzer
  * Plugin URI: https://github.com/hellaz/hellaz-website-analyzer/
  * Description: Comprehensive remote website analysis tool with advanced metadata extraction and technology detection.
  * Version: 1.0.0
  * Author: Hellaz.Team
- * Author URI: https://yourwebsite.com
+ * Author URI: https://hellaz.net
  * Text Domain: hellaz-website-analyzer
  * Domain Path: /languages
  * Requires at least: 5.6
@@ -17,9 +17,9 @@ defined('ABSPATH') || exit;
 
 if (version_compare(PHP_VERSION, '7.4', '<')) {
     add_action('admin_notices', function() {
-        echo '<div class="error"><p>'. 
-             esc_html__('HellaZ Analyzer requires PHP 7.4+', 'hellaz-website-analyzer').
-             '</p></div>';
+        echo '<div class="error"><p>' . 
+            esc_html__('Hellaz Analyzer requires PHP 7.4+', 'hellaz-website-analyzer') . 
+            '</p></div>';
     });
     return;
 }
@@ -30,7 +30,6 @@ define('HELLAZ_PLUGIN_PATH', plugin_dir_path(__FILE__));
 define('HELLAZ_PLUGIN_URL', plugin_dir_url(__FILE__));
 define('HELLAZ_PLUGIN_BASENAME', plugin_basename(__FILE__));
 define('HELLAZ_CACHE_TTL', 6 * HOUR_IN_SECONDS); // 6 hours cache
-
 
 // Autoload classes
 spl_autoload_register(function ($class_name) {
@@ -43,9 +42,9 @@ spl_autoload_register(function ($class_name) {
 });
 
 // Register activation/deactivation hooks
-register_activation_hook(__FILE__, ['Hellaz\Installer', 'activate']);
-register_deactivation_hook(__FILE__, ['Hellaz\Installer', 'deactivate']);
-register_uninstall_hook(__FILE__, ['Hellaz\Installer', 'uninstall']);
+register_activation_hook(__FILE__, ['Hellaz\\Installer', 'activate']);
+register_deactivation_hook(__FILE__, ['Hellaz\\Installer', 'deactivate']);
+register_uninstall_hook(__FILE__, ['Hellaz\\Installer', 'uninstall']);
 
 // Initialize the plugin
 add_action('plugins_loaded', function () {
@@ -54,7 +53,6 @@ add_action('plugins_loaded', function () {
         'hellaz-website-analyzer',
         false,
         dirname(plugin_basename(__FILE__)) . '/languages/'
-
     );
 
     // Initialize core components
@@ -63,7 +61,7 @@ add_action('plugins_loaded', function () {
     Hellaz\Blocks\Analyzer_Block::init();
     Hellaz\Shortcodes\Analyzer_Shortcode::init();
     Hellaz\API\External_Services::init();
-    
+
     // Initialize REST API endpoints
     if (did_action('init')) {
         Hellaz\API\Rest_API::init();
@@ -99,7 +97,7 @@ add_filter('plugin_action_links_' . HELLAZ_PLUGIN_BASENAME, function ($links) {
 if (!function_exists('hellaz_log')) {
     function hellaz_log($message) {
         if (defined('WP_DEBUG') && WP_DEBUG) {
-            error_log('[HellaZ Analyzer] ' . print_r($message, true));
+            error_log('[Hellaz Analyzer] ' . print_r($message, true));
         }
     }
 }
